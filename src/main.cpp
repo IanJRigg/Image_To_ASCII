@@ -17,26 +17,33 @@ void display_image(Mat& image)
     destroyWindow(windowName); //destroy the created window
 }
 
-Uint8 calculate_average(Mat& image, Uint32 row, Uint32 col, Uint32 square_size)
+UInt8 calculate_average(Mat& image, UInt32 row, UInt32 col, UInt32 square_size)
 {
-    Vec3b intensity = image.at<Vec3b>(col, row);
+    UInt32 sum = 0UL;
 
-    UInt32 blue  = static_cast<UInt32>(intensity.val[0UL]);
-    UInt32 green = static_cast<UInt32>(intensity.val[1UL]);
-    UInt32 red   = static_cast<UInt32>(intensity.val[2UL]);
+    for (UInt32 i = 0UL; i < square_size; ++i)
+    {
+        for(UInt32 j = 0UL; j < square_size; ++j)
+        {
+            //Print_Out("Is it failing here? " << image.cols << " " << (col + j) << " " << image.rows << " " << (row + i));
+            sum += static_cast<UInt32>(image.at<UInt8>(col + j, row + i));
+            //Print_Out("Nope");
+        }
+    }
 
-    Print_Out((blue + green + red) / 3);
+    Print_Out((sum) / (square_size * square_size));
+
+    return 0U;
 }
 
 
 void iterate_over_image(Mat& image)
 {
-    Mat grayscale_image;
-    cv::cvtColor(image, grayscale_image, cv::COLOR_BGR2GRAY);
+    Print_Out(image.rows << " " << image.cols);
 
-    for (Int32 row = 0UL; row < image.rows; ++row)
+    for (Int32 row = 0UL; row < image.rows; row += 12UL)
     {
-        for(Int32 col = 0UL; col < image.cols; ++col)
+        for(Int32 col = 0UL; col < image.cols; col += 12UL)
         {
             calculate_average(image, row, col, 12UL);
         }
@@ -46,7 +53,7 @@ void iterate_over_image(Mat& image)
 
 int main()
 {
-    Mat image = imread("/Users/ianrigg/Desktop/half-dome.jpg");
+    Mat image = imread("/Users/ianrigg/Desktop/half-dome.jpg", IMREAD_GRAYSCALE);
 
     if (image.empty())
     {
