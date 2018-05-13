@@ -1,7 +1,0 @@
- . : - = + * # % @
-
-
-10 characters 25.6 between each, or 25 between each of the characters, with the first having 31 instead of 25
-
-http://paulbourke.net/dataformats/asciiart/
-
