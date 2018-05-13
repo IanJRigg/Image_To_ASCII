@@ -35,12 +35,10 @@ UInt8 calculate_average(Mat& image, UInt32 row, UInt32 col, UInt32 square_size)
         for(UInt32 j = 0UL; j < square_size; ++j)
         {
             // Print_Out("Famous last words...? " << col + j << " " << row + i << " ");
-            sum += static_cast<UInt32>(image.at<UInt8>(col + j, row + i));
+            sum += static_cast<UInt32>(image.at<UInt8>(row + i, col + j));
             // Print_Out("Nope");
         }
     }
-
-    Print_Out((sum) / (square_size * square_size));
 
     return (sum) / (square_size * square_size);
 }
@@ -52,53 +50,50 @@ Description  :
 -----------------------------------------------------------------------------*/
 std::string average_to_ascii(UInt8 average)
 {
-    Print_Out("Average: " << static_cast<UInt32>(average));
     std::string character = "";
 
     // Characters to include from here: http://paulbourke.net/dataformats/asciiart/
 
     if(average <= 31)
     {
-        character += " ";
+        character += "@";
     }
     else if(average <= 56)
     {
-        character += ".";
+        character += "%";
     }
     else if(average <= 81)
     {
-        character += ":";
+        character += "#";
     }
     else if(average <= 106)
     {
-        character += "-";
+        character += "*";
     }
     else if(average <= 131)
     {
-        character += "=";
+        character += "+";
     }
     else if(average <= 156)
     {
-        character += "+";
+        character += "=";
     }
     else if(average <= 181)
     {
-        character += "*";
+        character += "-";
     }
     else if(average <= 206)
     {
-        character += "#";
+        character += ":";
     }
     else if(average <= 231)
     {
-        character += "%";
+        character += ".";
     }
     else
     {
-        character += "@";
+        character += " ";
     }
-
-    Print_Out(character);
 
     return character;
 }
@@ -117,18 +112,17 @@ void iterate_over_image(Mat& image)
 
     Print_Out(image.rows << " " << image.cols);
 
-    UInt32 row_count = image.cols - (image.cols % 12UL);
-    UInt32 col_count = image.rows - (image.rows % 12UL);
+    UInt32 row_count = image.rows - (image.rows % 6UL);
+    UInt32 col_count = image.cols - (image.cols % 6UL);
 
-    for (Int32 row = 0UL; row < row_count; row += 12UL)
+    for (Int32 row = 0UL; row < row_count; row += 6UL)
     {
-        for(Int32 col = 0UL; col < col_count; col += 12UL)
+        for(Int32 col = 0UL; col < col_count; col += 6UL)
         {
-            ascii_image += average_to_ascii(calculate_average(image, row, col, 12UL));
+            ascii_image += average_to_ascii(calculate_average(image, row, col, 6UL));
         }
 
         ascii_image += "\n";
-        Print_Out(ascii_image);
     }
 
     Print_Out(ascii_image);
